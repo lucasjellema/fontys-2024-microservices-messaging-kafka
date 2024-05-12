@@ -13,7 +13,7 @@ It has been decided therefore by the architects in this utility company that a n
 
 In this lab, you will implement and run both microservices and the Kafka Topic that provides the decoupled bridge between the two.
 
-Note: the resources for this lab are in the lab4 folder in the [Git repo on GitHub](https://github.com/lucasjellema/fontys-spring2023-microservices-messaging-kafka). 
+Note: the resources for this lab are in the lab4 folder in the [Git repo on GitHub](https://github.com/lucasjellema/fontys-2024-microservices-messaging-kafka). 
 
 Steps
 * CRM Microservice to handle REST calls with data read and manipulation requests; the CRM Microservice loads initial data from a CSV file and it currently does not write any changes in the state of its data
@@ -77,12 +77,12 @@ docker exec -ti kafka-1 bash
 Now let's create a new topic. For that we use the **kafka-topics** utility with the `--create` option. Create a *connection-mandates-topic* topic with 1 partition and a replication factor of 2.  
 
 ```
-kafka-topics --create --if-not-exists --zookeeper zookeeper-1:2181 --topic connection-mandates-topic --partitions 1 --replication-factor 2
+kafka-topics --create --if-not-exists --bootstrap-server kafka-1:19092 --topic connection-mandates-topic --partitions 1 --replication-factor 2
 ```
 Run this command to list the topics.
 
 ```
-kafka-topics --list --zookeeper zookeeper-1:2181
+kafka-topics --list --bootstrap-server kafka-1:19092
 ```
 You should see the new topic you have just created. 
 

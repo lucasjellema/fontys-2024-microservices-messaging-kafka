@@ -5,7 +5,7 @@ const externalConfig = require('./config').config;
 const kafka = new Kafka({
     clientId: 'my-app',
     brokers: externalConfig.KAFKA_BROKERS,
-    logLevel: logLevel.INFO
+    logLevel: logLevel.ERROR
   })
   
 
