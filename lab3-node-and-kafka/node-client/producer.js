@@ -3,7 +3,7 @@ const { Kafka, logLevel } = require('kafkajs')
 const kafka = new Kafka({
   clientId: 'my-app',
   brokers: ['localhost:29092', 'localhost:29093', 'localhost:29094'],
-  logLevel: logLevel.INFO
+  logLevel: logLevel.ERROR
 })
 
 // create a producer client on the Kafka Cluster
