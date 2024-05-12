@@ -14,7 +14,7 @@ This lab is only a very brief introduction of NodeJS and how to get started with
 
 ## Environment
 
-The Gitpod workspace comes preinstalled with the Node runtime. You can check which version is currently available by running the following command inn a new bash terminal:
+The Gitpod workspace ( that can be started using the URL: [https://gitpod.io/#https://github.com/lucasjellema/fontys-2024-microservices-messaging-kafka/](https://gitpod.io/#https://github.com/lucasjellema/fontys-2024-microservices-messaging-kafka/) comes preinstalled with the Node runtime. You can check which version is currently available by running the following command inn a new bash terminal:
 
 `node -v`
 

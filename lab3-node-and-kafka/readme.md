@@ -106,9 +106,63 @@ This lab deals with a Node application that runs a number a asynchronous, parall
 
 Check out the file `multi-producer-parallel-consumer.js` in directory *lab3-node-and-kafka\node-multi-kafka-producer-consumer*. The code should not be too hard to comprehend. 
 
-Function `produceMessages` is an asynchronous function that runs a loop of the specified number of itereations and in each iteration produces a message to `test-topic`. Before continuing with the next iteration, the process pauses for a number of miliseconds - as specified by the constant *productionInterval*. The function is invoked when this application is executed.
+Function `produceMessages` is an asynchronous function that runs a loop of the specified number of iterations and in each iteration produces a message to `test-topic`. Before continuing with the next iteration, the process pauses for a number of miliseconds - as specified by the constant *productionInterval*. The function is invoked when this application is executed.
+
+```
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+const kafka = new Kafka({
+  clientId: 'multi-producer',
+  brokers: ['localhost:29092', 'localhost:29093', 'localhost:29094'],
+  logLevel: logLevel.INFO
+})
+
+
+const producer = kafka.producer()
+
+const produceMessages = async (message, numberOfMessages = 20) => {
+  await producer.connect()
+  let messageCount = 0
+  while (messageCount++ < numberOfMessages) {
+    await producer.send({
+      topic: 'test-topic',
+      messages: [
+        { key: messageCount.toString(), value: JSON.stringify({ "headline": message, "messageNumber": messageCount, "greeting": getRandomGreeting() }) },
+      ],
+    })
+    console.log(`>>> Produced message ${messageCount} to topic`)
+    await delay(productionInterval)
+  }
+
+  await producer.disconnect()
+  console.log(">>> Done Producing")
+}
+```
 
 Function `consumeMessages` is obviously a consumer of messages from `test-topic`. Only new messages. The name of a consumer group is passed in the call to the function. The application assigns two consumers to the *blueTeam* and one to the *redTeam*. Processing a message is not complicated: write message details to the console - then sit back and relax and take a break for *consumptionInterval* miliseconds.
+
+```
+const consumeMessages = async (consumerGroupId = 'test-group') => {
+  const consumer = kafka.consumer({ groupId: consumerGroupId })
+
+  await consumer.connect()
+  await consumer.subscribe({ topic: 'test-topic', fromBeginning: false })
+
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      const prefix = `${topic}[partition ${partition} | offset ${message.offset}] / ${message.timestamp}`
+      console.log(`<<< Consumer Team ${consumerGroupId} reports message - ${prefix} ${message.key}#${message.value}`)
+      await delay(consumptionInterval) // processing one message takes a little bit longer than the time between two messages on the producing end
+    },
+  })
+}
+
+consumeMessages('blueTeam')
+consumeMessages('blueTeam')
+consumeMessages('redTeam')
+```
 
 The blueTeam with two members can obviously outperform the redTeam with just a single consumer. In this case, because the time it takes to process a message is longer than the (production) interval between messages, a single consumer will not be able to keep up and will start falling behind the message producer. A team with two members should be able to keep up - as long as the processing interval is not longer than twice the production interval.
 
