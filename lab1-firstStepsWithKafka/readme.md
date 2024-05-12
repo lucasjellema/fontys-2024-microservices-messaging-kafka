@@ -33,7 +33,7 @@ Note: I gratefully made use of Guido Schmutz's https://github.com/gschmutz/strea
 
 ## Inspect the environment
 
-Click on the plus sign on the right side of the screen to launch a new terminal; select `bash` as the terminal type. 
+Make sure the Terminal tab is selected (and not for example the Output tab). Click on the plus sign on the right side of the screen to launch a new terminal; select `bash` as the terminal type. 
 ![](images/open-bash-terminal.png)  
 
 Type
@@ -70,7 +70,7 @@ You will enter the `kafka-1` container. The prompt will change to `[appuser@kafk
 First, let's list the topics available on your Kafka Cluster. For that we use the `kafka-topics` utility with the `--list` option. 
 
 ```
-kafka-topics --list --zookeeper zookeeper-1:2181
+kafka-topics --list --bootstrap-server kafka-1:19092
 ```
 
 We can see that there are no topics yet.  
@@ -82,12 +82,12 @@ We can see that there are no topics yet.
 Now let's create a new topic. For that we again use the **kafka-topics** utility but this time with the `--create` option. We will create a test topic with 1 partition and replicated 2 times. The `--if-not-exists` option is handy to avoid errors, in case a topic already exists. 
 
 ```
-kafka-topics --create --if-not-exists --zookeeper zookeeper-1:2181 --topic test-topic --partitions 1 --replication-factor 2
+kafka-topics --create --if-not-exists --bootstrap-server kafka-1:19092 --topic test-topic --partitions 1 --replication-factor 2
 ```
 
 Re-Run the command to list the topics.
 ```
-kafka-topics --list --zookeeper zookeeper-1:2181
+kafka-topics --list --bootstrap-server kafka-1:19092
 ```
 You should see the new topic you have just created. 
 
@@ -96,7 +96,7 @@ You should see the new topic you have just created.
 You can use the `--describe` option to get details on a specific topic, such as the distribution of the partitions over the cluster nodes (aka brokers).
 
 ```
-kafka-topics --describe --zookeeper zookeeper-1:2181 --topic test-topic
+kafka-topics --describe --bootstrap-server kafka-1:19092 --topic test-topic
 ```
 
 The test-topic is a shared object throughout the cluster. The contents of the topic is replicated across two brokers.
@@ -296,7 +296,7 @@ You can also specify how many messages you want to consume, by specifying `-c<nu
 In the bash terminal window you opened into the `kafka-1` container, delete the test-topic - and all data it currently contains - using the following command: 
 
 ```
-kafka-topics --delete  --zookeeper zookeeper-1:2181 --topic test-topic 
+kafka-topics --delete  --bootstrap-server kafka-1:19092 --topic test-topic 
 ```
 
 You can check if the consumers have noticed that the topic no longer exists. They should have - as they frequently try to contact the brokers regarding the topic and should be informed that the topic is no longer available.
@@ -311,13 +311,13 @@ When we created topic *test-topic* earlier on we specified `-partitions 1`. We d
 Use the next command to recreate the *test-topic* , this time with two partitions - in the bash terminal window that `docker exec`-ed into the `kafka-1` container.
 
 ```
-kafka-topics --create --if-not-exists --zookeeper zookeeper-1:2181 --topic test-topic --partitions 2 --replication-factor 2
+kafka-topics --create --if-not-exists --bootstrap-server kafka-1:19092 --topic test-topic --partitions 2 --replication-factor 2
 ```
 
 Inspect the topic using the command:
 
 ```
-kafka-topics --describe --zookeeper zookeeper-1:2181 --topic test-topic
+kafka-topics --describe --bootstrap-server kafka-1:19092 --topic test-topic
 ```
 
 ![](images/describe-partitioned-topic.png)  
