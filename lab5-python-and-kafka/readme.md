@@ -24,8 +24,10 @@ cd lab5-python-and-kafka
 To install the Python library `kafka-python` execute:
 
 ```
-pip install kafka-python
+pip install kafka-python-ng
 ```
+
+(note: installing kafka-python ends up in an error "ModuleNotFoundError: No module named 'kafka.vendor.six.moves'")
 
 ![](images/pip-kafka-python.png)
 
