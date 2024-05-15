@@ -16,7 +16,7 @@ A multi part hands on guide is available with many code samples and examples of 
 
 Note: the labs on Python, Java, Go and .NET do not depend on each other or on any other labs except for the first lab (where the topic created)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/lucasjellema/fontys-fall2023-microservices-messaging-kafka)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/lucasjellema/fontys-2024-microservices-messaging-kafka)
 
 By clicking this button, you will launch a Gitpod workspace - associated with your Github account. This is free. At the time of writing, the first 50 hours each month (yes, *50 hours* again *each month*) of workspace usage are free. This workspace comes with VS Code in the browser, the language runtimes and build tools as well as Docker and Docker Compose. Once running, the workspace is initialized from the GitHub repo with all sources and this README document, Docker Compose is started to launch the containers for the Apache Kafka Cluster and supporting tooling.
 
